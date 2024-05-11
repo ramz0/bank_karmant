@@ -67,10 +67,17 @@ class DashboardMenuCliente(ctk.CTkFrame):
         self.btn_cerrar_sesion = ctk.CTkButton(
             self, 
             text=self.txtCerrarSesion, 
-            fg_color='#45475a', 
-            text_color='white', 
-            anchor='center'
+            fg_color=self.colorMenu, 
+            text_color=self.colorTextMenu, 
+            anchor='center',
+            hover=False,
+            font=('Arial', 10)
         )
+
+        self.btn_cerrar_sesion.bind("<Enter>", lambda event: self.btn_cerrar_sesion.configure(font=('Arial', 13))) 
+        self.btn_cerrar_sesion.bind("<Leave>", lambda event:self.btn_cerrar_sesion.configure(font=('Arial', 10)))     
+
+
         self.btn_cerrar_sesion.grid(row=self.orden_botones, column=0, pady=5)
 
         # Diseño auto ajustable
