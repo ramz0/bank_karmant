@@ -4,14 +4,12 @@ import customtkinter as ctk
 class DashboardMenuCliente(ctk.CTkFrame):
     colorMenu = '#2B8C57'
     direccionIconoBanco = 'assets/logobanco.png'
-    # nombreBanco = "BANK KARMNAT"
-    nombreBanco = ""
     txtCerrarSesion = 'CERRAR SESIÓN'
     
     seleccionBoton = '#FFFEFF'
     colorTextMenu = seleccionBoton
 
-    def __init__(self, parent, button_names, *args, **kwargs):
+    def __init__(self, parent, button_names, tituloMenu, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
 
         # Cargar la imagen de fondo
@@ -23,14 +21,15 @@ class DashboardMenuCliente(ctk.CTkFrame):
         # Crear el CTkLabel para el logo
         self.lbl_logo_banco = ctk.CTkLabel(self, image=self.img_logo_banco, anchor='center', text='', fg_color='transparent')
         self.lbl_logo_banco.grid(row=0, column=0, pady=5, padx=20)
-
-        # Crear el nombre del banco
-        self.nombre_banco = ctk.CTkLabel(self, text=self.nombreBanco, text_color=self.colorTextMenu, anchor='center', font=('Roboto', 24))
-        self.nombre_banco.grid(row=1, column=0, padx=10, columnspan=2)
-
+        
         # Espacio
         self.espacio_1 = ctk.CTkFrame(self, width=1, height=30)
         self.espacio_1.grid(row=2, column=0)
+
+        # Crear el nombre del banco
+        self.nombre_banco = ctk.CTkLabel(self, text=tituloMenu, text_color=self.colorTextMenu, anchor='center', font=('Roboto', 23))
+        self.nombre_banco.grid(row=1, column=0, padx=10, columnspan=2)
+
 
         # Botones del menú
         self.nombre_botones_menu = button_names
@@ -38,29 +37,33 @@ class DashboardMenuCliente(ctk.CTkFrame):
         self.orden_botones = 3
         self.btnsMenu = []
         for str_btn in self.nombre_botones_menu:
+            
             self.btnMenu = ctk.CTkButton(
                 self, 
                 text=str_btn, 
                 fg_color=self.colorMenu, 
                 corner_radius=5, 
                 height=40, 
-                anchor='center', 
+                anchor='e', 
                 text_color=self.colorTextMenu, 
                 text_color_disabled=self.colorMenu,
-                width=230
+                width=200
             )
             self.btnsMenu.append(self.btnMenu)
 
-            self.btnMenu.grid(row=self.orden_botones, column=0, pady=5, columnspan=2)
+            if '' != str_btn:    
+              self.btnMenu.grid(row=self.orden_botones, column=0, pady=5, ipadx = 5,columnspan=2)
             self.orden_botones += 1
         
         
         self.btnsMenu[0].bind("<Enter>", lambda event: self.btnsMenu[0].configure(text_color=self.colorMenu, fg_color=self.seleccionBoton)) 
         self.btnsMenu[0].bind("<Leave>", lambda event:self.btnsMenu[0].configure(text_color=self.colorTextMenu, fg_color=self.colorMenu))     
         self.btnsMenu[1].bind("<Enter>", lambda event: self.btnsMenu[1].configure(text_color=self.colorMenu, fg_color=self.seleccionBoton)) 
-        self.btnsMenu[1].bind("<Leave>", lambda event:self.btnsMenu[1].configure(text_color=self.colorTextMenu, fg_color=self.colorMenu))     
-        self.btnsMenu[2].bind("<Enter>", lambda event: self.btnsMenu[2].configure(text_color=self.colorMenu, fg_color=self.seleccionBoton)) 
-        self.btnsMenu[2].bind("<Leave>", lambda event:self.btnsMenu[2].configure(text_color=self.colorTextMenu, fg_color=self.colorMenu))     
+        self.btnsMenu[1].bind("<Leave>", lambda event:self.btnsMenu[1].configure(text_color=self.colorTextMenu, fg_color=self.colorMenu))
+
+        if '' != button_names[2]:     
+          self.btnsMenu[2].bind("<Enter>", lambda event: self.btnsMenu[2].configure(text_color=self.colorMenu, fg_color=self.seleccionBoton)) 
+          self.btnsMenu[2].bind("<Leave>", lambda event:self.btnsMenu[2].configure(text_color=self.colorTextMenu, fg_color=self.colorMenu))     
 
         # Espacio 2
         self.espacio_2 = ctk.CTkFrame(self, width=1, height=180)
