@@ -9,6 +9,11 @@ class DashboardMenuCliente(ctk.CTkFrame):
     seleccionBoton = '#FFFEFF'
     colorTextMenu = seleccionBoton
 
+    iconosUsusario = ['assets/icono_deposito.png', 'assets/icon_transferencia.png', 'assets/icono_retiro.png'] 
+    iconosAdministrador = ['assets/icono_acciones.png', 'assets/icono_va.png'] 
+    iconosDeBotones = [iconosAdministrador, iconosUsusario]
+    tamanoIconos = (35,35)
+
     def __init__(self, parent, button_names, tituloMenu, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
 
@@ -48,6 +53,7 @@ class DashboardMenuCliente(ctk.CTkFrame):
                 text_color=self.colorTextMenu, 
                 text_color_disabled=self.colorMenu,
                 width=200
+               
             )
             self.btnsMenu.append(self.btnMenu)
 
@@ -55,7 +61,20 @@ class DashboardMenuCliente(ctk.CTkFrame):
               self.btnMenu.grid(row=self.orden_botones, column=0, pady=5, ipadx = 5,columnspan=2)
             self.orden_botones += 1
         
-        
+        nombreIconos = []
+        if 'USUARIO' == tituloMenu:
+          nombreIconos = self.iconosDeBotones[1]
+        else:
+          nombreIconos = self.iconosDeBotones[0]
+
+        i = 0
+        while i < len(nombreIconos):
+          print(nombreIconos[i])
+          self.img_icon_btn = ctk.CTkImage(light_image=Image.open(nombreIconos[i]), size=self.tamanoIconos)
+          self.btnsMenu[i].configure(image=self.img_icon_btn)
+          i += 1
+
+
         self.btnsMenu[0].bind("<Enter>", lambda event: self.btnsMenu[0].configure(text_color=self.colorMenu, fg_color=self.seleccionBoton)) 
         self.btnsMenu[0].bind("<Leave>", lambda event:self.btnsMenu[0].configure(text_color=self.colorTextMenu, fg_color=self.colorMenu))     
         self.btnsMenu[1].bind("<Enter>", lambda event: self.btnsMenu[1].configure(text_color=self.colorMenu, fg_color=self.seleccionBoton)) 
