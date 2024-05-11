@@ -3,8 +3,9 @@ import customtkinter as ctk
 
 class DashboardMenuCliente(ctk.CTkFrame):
     colorMenu = '#2B8C57'
-    direccionIconoBanco = 'assets/icono_banco.png'
-    nombreBanco = "BANK KARMNAT"
+    direccionIconoBanco = 'assets/logobanco.png'
+    # nombreBanco = "BANK KARMNAT"
+    nombreBanco = ""
     txtCerrarSesion = 'CERRAR SESIÓN'
     
     seleccionBoton = '#FFFEFF'
@@ -17,7 +18,7 @@ class DashboardMenuCliente(ctk.CTkFrame):
         self.configure(fg_color=self.colorMenu)
 
         # Cargar la imagen del logo con fondo transparente
-        self.img_logo_banco = ctk.CTkImage(light_image=Image.open(self.direccionIconoBanco), size=(200,200))
+        self.img_logo_banco = ctk.CTkImage(light_image=Image.open(self.direccionIconoBanco), size=(200,130))
         
         # Crear el CTkLabel para el logo
         self.lbl_logo_banco = ctk.CTkLabel(self, image=self.img_logo_banco, anchor='center', text='', fg_color='transparent')
@@ -67,10 +68,19 @@ class DashboardMenuCliente(ctk.CTkFrame):
         self.btn_cerrar_sesion = ctk.CTkButton(
             self, 
             text=self.txtCerrarSesion, 
-            fg_color='#45475a', 
-            text_color='white', 
-            anchor='center'
+            fg_color=self.colorMenu, 
+            text_color=self.colorTextMenu, 
+            anchor='center',
+            font=('Arial', 10),
+            hover=False
         )
+
+        
+        self.btn_cerrar_sesion.bind("<Enter>", lambda event: 
+        self.btn_cerrar_sesion.configure(font=('Arial', 12))) 
+        
+        self.btn_cerrar_sesion.bind("<Leave>", lambda event:
+        self.btn_cerrar_sesion.configure(font=('Arial', 10)))     
         self.btn_cerrar_sesion.grid(row=self.orden_botones, column=0, pady=5)
 
         # Diseño auto ajustable
