@@ -80,11 +80,8 @@ class DashboardMenuCliente(ctk.CTkFrame):
         )
 
         
-        self.btn_cerrar_sesion.bind("<Enter>", lambda event: 
-        self.btn_cerrar_sesion.configure(font=('Arial', 12))) 
-        
-        self.btn_cerrar_sesion.bind("<Leave>", lambda event:
-        self.btn_cerrar_sesion.configure(font=('Arial', 10)))     
+        self.btn_cerrar_sesion.bind("<Enter>", lambda event: self.btn_cerrar_sesion.configure(font=('Arial', 12))) 
+        self.btn_cerrar_sesion.bind("<Leave>", lambda event:self.btn_cerrar_sesion.configure(font=('Arial', 10)))     
         self.btn_cerrar_sesion.grid(row=self.orden_botones, column=0, pady=5)
 
         # Diseño auto ajustable
