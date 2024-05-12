@@ -1,6 +1,6 @@
 from PIL import Image
 import customtkinter as ctk
-from widgets_custom import DashboardMenuCliente 
+from widgets_custom import DashboardMenuCliente, MovimientoWidget 
 
 # LISTA DE LOS BOTONES QUE ESTARAN EN EL MENU:
 nombreBotonesMenu = ['DEPOSITO', 'TRANSFERENCIA', 'RETIRO']
@@ -44,28 +44,8 @@ contenedorMovimientosCliente = ctk.CTkScrollableFrame(curpoInterfaz, fg_color='w
 contenedorMovimientosCliente.grid(row=2, column=0, sticky='wens', pady=10, padx=10)
 
 
-cardMovimiento = ctk.CTkFrame(contenedorMovimientosCliente, border_color='gray', border_width=1)
+cardMovimiento = MovimientoWidget(contenedorMovimientosCliente, icon_path=iconos_movimientos[0], accion_text='Depósito', fecha_text='2024-05-12', usuario_text='Juan', cantidad_text='$100.00')
 cardMovimiento.grid(row=0, column=0, sticky='we')
-
-img_iconoMovimiento = ctk.CTkImage(light_image=Image.open(iconos_movimientos[0]), size=(50,70))
-
-lbl_iconoMovimiento = ctk.CTkLabel(cardMovimiento, image=img_iconoMovimiento, anchor='center', text='', fg_color='transparent')
-lbl_iconoMovimiento.grid(row=0, column=0, pady=5, padx=20, rowspan=2)
-
-lbl_accion = ctk.CTkLabel(cardMovimiento, text='Movimiento: ')
-lbl_accion.grid(row=0, column=1)
-
-lbl_fecha = ctk.CTkLabel(cardMovimiento, text='fecha')
-lbl_fecha.grid(row=1, column=1)
-
-lbl_fecha = ctk.CTkLabel(cardMovimiento, text='usuario que realizo la operacion.')
-lbl_fecha.grid(row=0, column=2)
-
-frame_espacio = ctk.CTkFrame(cardMovimiento, fg_color='#EBEBEB', height=1)
-frame_espacio.grid(row=0, column=3, rowspan=2, sticky='we')
-
-lbl_cantidad = ctk.CTkLabel(cardMovimiento, text='$0.00')
-lbl_cantidad.grid(row=0, column=4, rowspan=2, padx=10)
 
 # DISEÑO AUTO AJUSTABLE.
 
