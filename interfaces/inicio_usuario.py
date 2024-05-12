@@ -33,6 +33,9 @@ mensajeSaldo.grid(row=1, column=1, pady=5, padx=35)
 
 saldoDisponible = ctk.CTkLabel(contenedorCliente, text='$ 000.00')
 saldoDisponible.grid(row=2, column=1, pady=5, padx=35)
+
+contenedorMovimientosCliente = ctk.CTkScrollableFrame(curpoInterfaz)
+contenedorMovimientosCliente.grid(row=1, column=0, sticky='we', pady=10, padx=10)
 # DISEÑO AUTO AJUSTABLE.
 
 #menu
@@ -42,5 +45,7 @@ root.columnconfigure(1, weight=10)
 
 dashboard_menu.rowconfigure(0, weight=1)
 curpoInterfaz.columnconfigure(0, weight=1)
+curpoInterfaz.rowconfigure(0, weight=1)
+curpoInterfaz.rowconfigure(0, weight=1)
 
 root.mainloop()
