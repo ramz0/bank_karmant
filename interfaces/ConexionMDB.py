@@ -1,5 +1,3 @@
-from tkinter import Toplevel
-
 import mysql
 
 class ConexionMDB():
