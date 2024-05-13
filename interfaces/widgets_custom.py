@@ -51,6 +51,7 @@ class DashboardMenuCliente(ctk.CTkFrame):
                 corner_radius=5, 
                 height=40, 
                 anchor='e', 
+                compound='right',
                 text_color=self.colorTextMenu, 
                 text_color_disabled=self.colorMenu,
                 width=200
