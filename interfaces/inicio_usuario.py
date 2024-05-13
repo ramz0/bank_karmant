@@ -44,7 +44,7 @@ contenedorMovimientosCliente = ctk.CTkScrollableFrame(curpoInterfaz, fg_color='w
 contenedorMovimientosCliente.grid(row=2, column=0, sticky='wens', pady=10, padx=10)
 
 
-cardMovimiento = MovimientoWidget(contenedorMovimientosCliente, icon_path=iconos_movimientos[0], accion_text='Depósito', fecha_text='2024-05-12', usuario_text='Juan', cantidad_text='$100.00')
+cardMovimiento = MovimientoWidget(contenedorMovimientosCliente, icon_path=iconos_movimientos[0], accion_text='Depósito', fecha_text='2024-05-12', usuario_text='Cliente: Juan', cantidad_text='$100.00')
 cardMovimiento.grid(row=0, column=0, sticky='we')
 
 # DISEÑO AUTO AJUSTABLE.
