@@ -1,5 +1,5 @@
 from customtkinter import *
-from PIL import Image
+import PIL
 from widgets_custom import DashboardMenuCliente
 
 app = CTk()
@@ -11,7 +11,7 @@ frame_log_2 = CTkFrame(app)
 frame_log_2.grid(row=0, column=1, sticky= "nswe", pady= 5, padx= 5 )
 
 
-img_logo = Image.open("assets/logobanco.png")
+img_logo = PIL.Image.open("assets/logobanco.png")
 img_logobanco= CTkImage(light_image=img_logo, dark_image=img_logo, size=(200,130))
 
 lb_logo= CTkLabel(frame_log, image=img_logobanco,text="", compound="center")
