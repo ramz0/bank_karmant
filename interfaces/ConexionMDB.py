@@ -1,8 +1,9 @@
-import mysql
+import mysql.connector
 
 class ConexionMDB():
-    def __init__(self, parent):
+    def conectar_a_MariaDB():
         try:
+        # Reemplaza los valores de usuario, contraseña, host y nombre de la base de datos con los correctos
             connection = mysql.connector.connect(
                 user='root',
                 password='',
