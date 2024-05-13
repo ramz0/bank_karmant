@@ -4,10 +4,10 @@ class ConexionMDB():
     def __init__(self, parent):
         try:
             connection = mysql.connector.connect(
-                user='admin',
-                password='12345',
+                user='root',
+                password='',
                 host='localhost',
-                database='mundial_alemania_2006'
+                database='bank_karmant'
             )
             return connection
         except mysql.connector.Error as error:
