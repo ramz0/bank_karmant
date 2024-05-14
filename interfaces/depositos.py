@@ -6,7 +6,7 @@ import customtkinter as ctk
 from customtkinter import *
 from PIL import Image
 
-from ConexionMDB import ConexionMDB
+from ConexionMDB import conectar_a_MariaDB
 from widgets_custom import DashboardMenuCliente, MovimientoWidget
 
 # LISTA DE LOS BOTONES QUE ESTARAN EN EL MENU:
@@ -60,11 +60,22 @@ numero_cuenta.grid(row=1, column=0, pady=5, padx=10,sticky="w")
 
 
 #aqui obtiene el valor del saldo
+def obtener_saldo_cuenta(self, numero_cuenta):
+        query = f"SELECT SALDO FROM CUENTA WHERE NUMERO_CUENTA = '{numero_cuenta}'"
+        self.cursor_db.execute(query)
+        saldo = self.cursor_db.fetchone()
+        if saldo:
+            return saldo[0]
+        else:
+            return None
+
+
 saldo_disponible= ctk.CTkLabel(contenedor_datos,text='saldo',fg_color="transparent",font=("Arial",20))
 saldo_disponible.grid(row=2, column=1, pady=5, padx=10,sticky="w")
 
+
 #se obtienen valor de la cuenta
-cuenta= ctk.CTkLabel(contenedor_datos,text='numero de cuenta',fg_color="transparent",font=("Arial",20))
+cuenta= ctk.CTkEntry(contenedor_datos)
 cuenta.grid(row=2, column=0, pady=5, padx=10,sticky="w")
 
 
