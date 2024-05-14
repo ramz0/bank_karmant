@@ -3,6 +3,7 @@ import customtkinter as ctk
 from widgets_custom import DashboardMenuCliente
 from widgets_custom import CTkTable
 from ConexionMDB import *
+from decimal import Decimal
 
 
 # LISTA DE LOS BOTONES QUE ESTARAN EN EL MENU:
@@ -22,6 +23,74 @@ registrosTablaCliente.insert(0, camposTabla)
 
 ctk.set_appearance_mode("light") # Fuerza el modo claro
 ctk.set_default_color_theme("green")  # Themes: blue (default), dark-blue, green
+
+def eliminar():
+    # Obtener el campo y el valor a eliminar
+    campo_eliminar = cboxCampoEliminar.get()
+    valor_eliminar = entryDatoEliminar.get()
+    
+    try:
+        # Eliminar el registro de la base de datos
+        delete('cuenta', f"{campo_eliminar} = '{valor_eliminar}'")
+        
+        # Actualizar la tabla con los nuevos datos después de la eliminación
+        registrosTablaCliente = select('cuenta')
+        registrosTablaCliente.insert(0, camposTabla)
+        tablaCliente.update(values=registrosTablaCliente)
+        
+        # Limpiar el campo de entrada después de la eliminación
+        entryDatoEliminar.delete(0, 'end')
+    except Exception as e:
+        print("Error al eliminar de la base de datos:", str(e))
+
+
+def actualizar():
+    # Obtener los valores de los campos de entrada
+    nuevo_valor = entryDatoActualizarS.get()
+    campo = cboxCampoActualizarS.get()
+    campo_where = cboxCampoActualizarW.get()
+    valor_where = entryDatoAtualizarW.get()
+    
+    try:
+        # Actualizar los valores en la base de datos
+        update('cuenta', [campo, nuevo_valor], campo_where + " = " + valor_where)
+        # Actualizar la tabla con los nuevos datos
+        registrosTablaCliente = select('cuenta')
+        registrosTablaCliente.insert(0, camposTabla)
+        tablaCliente.update(values=registrosTablaCliente)
+        # Limpiar los campos de entrada después de la actualización
+        for entry in [entryDatoActualizarS, entryDatoAtualizarW]:
+            entry.delete(0, 'end')
+    except Exception as e:
+        print("Error al actualizar en la base de datos:", str(e))
+
+
+def insertar():
+    # Obtener los valores de los campos de entrada
+    numero_cuenta = entryNumeroCuenta.get()
+    id_cliente = entryIdCliente.get()
+    id_tipo_cuenta = entryIdTipoCuenta.get()
+    saldo = entrySaldo.get()
+    fecha_emision = entryFechaEmision.get()
+    fecha_vencimiento = entryFechaVencimiento.get()
+    
+    # Crear una lista con los valores de los campos
+    valores = [numero_cuenta, id_cliente, id_tipo_cuenta, Decimal(saldo), fecha_emision, fecha_vencimiento]
+    print(valores)
+    try:
+        # Insertar los valores en la base de datos
+        insert('cuenta', valores)
+        # Actualizar la tabla con los nuevos datos
+        registrosTablaCliente = select('cuenta')
+        registrosTablaCliente.insert(0, camposTabla)
+        tablaCliente.update(values=registrosTablaCliente)
+        # Limpiar los campos de entrada después de la inserción
+        for entry in [entryNumeroCuenta, entryIdCliente, entryIdTipoCuenta, entrySaldo, entryFechaEmision, entryFechaVencimiento]:
+            entry.delete(0, 'end')
+    except Exception as e:
+        print("Error al insertar en la base de datos:", str(e))
+
+funcionesBotones = [insertar,eliminar, actualizar]
 
 root = ctk.CTk()
 # COMO INVOCAR EL MENU DEL USUARIO
@@ -46,7 +115,8 @@ for tituloCRUD in btnsCRUD:
     image=img_icon_btnCRUD, 
     text=tituloCRUD, 
     height=50,
-    font=('Roboto', 15)
+    font=('Roboto', 15),
+    command=funcionesBotones[i]
   )
   btnCRUD.grid(row=0, column=i, pady=10, padx=5,ipady=5, sticky="we")
   i += 1
@@ -54,23 +124,41 @@ for tituloCRUD in btnsCRUD:
 contenedorFormInsertar = ctk.CTkFrame(curpoInterfaz, height=5, fg_color='#EFF0F0')
 contenedorFormInsertar.grid(row=2, column=0, padx=20, pady=10, sticky='we')
 
-labelTituloFormCliente=ctk.CTkLabel(contenedorFormInsertar, text='    INSERTA UNA NUEVA CUENTA:', text_color='white', fg_color=colorBase, anchor='w')
+labelTituloFormCliente = ctk.CTkLabel(contenedorFormInsertar, text='    INSERTA UNA NUEVA CUENTA:', text_color='white', fg_color=colorBase, anchor='w')
 labelTituloFormCliente.grid(row=0, column=0, columnspan=6, sticky="we")
 
 columna = 0
 fila = 1
-for campo in camposTabla:
-  if columna == 6:
-    fila += 1
-    columna = 0
-  labelFromInsertar = ctk.CTkLabel(contenedorFormInsertar, text= campo + ": ", text_color=colorBase, font=('Arial', 11))
-  labelFromInsertar.grid(row=fila, column=columna, pady=10, padx=3, sticky="e")
-  columna += 1
 
-  entryDatoCliente = ctk.CTkEntry(contenedorFormInsertar, corner_radius=50, fg_color='white', border_width=0)
-  entryDatoCliente.grid(row=fila, column=columna, pady=10, padx=3, sticky="w")
-  contenedorFormInsertar.columnconfigure(columna, weight=1)
-  columna += 1
+# Lista para almacenar las Entry correspondientes a cada campo
+entries = []
+
+for campo in camposTabla:
+    if columna == 6:
+        fila += 1
+        columna = 0
+
+    # Crear etiqueta para el campo
+    labelFromInsertar = ctk.CTkLabel(contenedorFormInsertar, text=campo + ": ", text_color=colorBase, font=('Arial', 11))
+    labelFromInsertar.grid(row=fila, column=columna, pady=10, padx=3, sticky="e")
+
+    columna += 1
+
+    # Crear la Entry correspondiente al campo y agregarla a la lista
+    entry = ctk.CTkEntry(contenedorFormInsertar, corner_radius=50, fg_color='white', border_width=0)
+    entry.grid(row=fila, column=columna, pady=10, padx=3, sticky="w")
+    entries.append(entry)
+
+    contenedorFormInsertar.columnconfigure(columna, weight=1)
+    columna += 1
+
+# Asignar nombres específicos a las Entry
+entryNumeroCuenta = entries[0]
+entryIdCliente = entries[1]
+entryIdTipoCuenta = entries[2]
+entrySaldo = entries[3]
+entryFechaEmision = entries[4]
+entryFechaVencimiento = entries[5]
 
 contenedorForm_A_E = ctk.CTkFrame(curpoInterfaz, height=5, fg_color='transparent')
 contenedorForm_A_E.grid(row=3, column=0, padx=20, pady=10, sticky='we')
