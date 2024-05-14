@@ -1,4 +1,5 @@
 import decimal
+import subprocess
 import tkinter as tk
 
 import customtkinter as ctk
@@ -106,7 +107,8 @@ button_obtener_monto.grid(row=4, column=0, pady=10, padx=10, sticky="")
 
 
 def funcion_menu():
-    print("regresar menu")
+    root.destroy()
+    subprocess.Popen(['python','inicio_usuario.py'])
 
 button=ctk.CTkButton(cuerpo_depositar, text="Regresar Usuario", command=funcion_menu)
 
