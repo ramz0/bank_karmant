@@ -1,3 +1,4 @@
+import subprocess
 from PIL import Image
 import customtkinter as ctk
 
@@ -14,6 +15,11 @@ class DashboardMenuCliente(ctk.CTkFrame):
     iconosAdministrador = ['assets/icono_acciones.png', 'assets/icono_va.png'] 
     iconosDeBotones = [iconosAdministrador, iconosUsusario]
     tamanoIconos = (35,35)
+
+    ventanasUsuario = ['depositos.py', 'retiros.py','transferencias.py']
+    ventanasAdministrador = ['acciones_cuneta_administrador.py', 'vizualizacion_administrador.py','']
+
+    ventanas = [ventanasUsuario,ventanasAdministrador]
 
     def __init__(self, parent, button_names, tituloMenu, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
@@ -42,49 +48,43 @@ class DashboardMenuCliente(ctk.CTkFrame):
         self.orden_botones = 3
         self.orden_botones = 3
         self.btnsMenu = []
-        for str_btn in self.nombre_botones_menu:
-            
-            self.btnMenu = ctk.CTkButton(
-                self, 
-                text=str_btn, 
-                fg_color=self.colorMenu, 
-                corner_radius=5, 
-                height=40, 
-                anchor='e', 
-                compound='right',
-                text_color=self.colorTextMenu, 
-                text_color_disabled=self.colorMenu,
-                width=200
-               
-            )
-            self.btnsMenu.append(self.btnMenu)
+        for i, str_btn in enumerate(self.nombre_botones_menu):
+            if str_btn != '':
+                self.btnMenu = ctk.CTkButton(
+                    self, 
+                    text=str_btn, 
+                    fg_color=self.colorMenu, 
+                    corner_radius=5, 
+                    height=40, 
+                    anchor='e', 
+                    compound='right',
+                    text_color=self.colorTextMenu, 
+                    text_color_disabled=self.colorMenu,
+                    width=200,
+                   
+                )
+                self.btnsMenu.append(self.btnMenu)
+                self.btnMenu.grid(row=self.orden_botones, column=0, pady=5, ipadx=5, columnspan=2)
+                self.orden_botones += 1
+                
+        if tituloMenu == 'USUARIO':
+            self.btnsMenu[0].bind("<Enter>", lambda event: self.btnsMenu[0].configure(text_color=self.colorMenu, fg_color=self.seleccionBoton,  command=lambda ventana=self.ventanas[0][i - 2]: cambiar_ventana(ventana))) 
+            self.btnsMenu[0].bind("<Leave>", lambda event:self.btnsMenu[0].configure(text_color=self.colorTextMenu, fg_color=self.colorMenu))     
+            self.btnsMenu[1].bind("<Enter>", lambda event: self.btnsMenu[1].configure(text_color=self.colorMenu, fg_color=self.seleccionBoton, command=lambda ventana=self.ventanas[0][i]: cambiar_ventana(ventana))) 
+            self.btnsMenu[1].bind("<Leave>", lambda event:self.btnsMenu[1].configure(text_color=self.colorTextMenu, fg_color=self.colorMenu))
 
-            if '' != str_btn:    
-              self.btnMenu.grid(row=self.orden_botones, column=0, pady=5, ipadx = 5,columnspan=2)
-            self.orden_botones += 1
-        
-        nombreIconos = []
-        if 'USUARIO' == tituloMenu:
-          nombreIconos = self.iconosDeBotones[1]
+            if '' != button_names[2]:     
+                self.btnsMenu[2].bind("<Enter>", lambda event: self.btnsMenu[2].configure(text_color=self.colorMenu, fg_color=self.seleccionBoton, command=lambda ventana=self.ventanas[0][i-1]: cambiar_ventana(ventana))) 
+                self.btnsMenu[2].bind("<Leave>", lambda event:self.btnsMenu[2].configure(text_color=self.colorTextMenu, fg_color=self.colorMenu))     
         else:
-          nombreIconos = self.iconosDeBotones[0]
+            self.btnsMenu[0].bind("<Enter>", lambda event: self.btnsMenu[0].configure(text_color=self.colorMenu, fg_color=self.seleccionBoton,  command=lambda ventana=self.ventanas[1][i]: cambiar_ventana(ventana))) 
+            self.btnsMenu[0].bind("<Leave>", lambda event:self.btnsMenu[0].configure(text_color=self.colorTextMenu, fg_color=self.colorMenu))     
+            self.btnsMenu[1].bind("<Enter>", lambda event: self.btnsMenu[1].configure(text_color=self.colorMenu, fg_color=self.seleccionBoton, command=lambda ventana=self.ventanas[1][i-1]: cambiar_ventana(ventana))) 
+            self.btnsMenu[1].bind("<Leave>", lambda event:self.btnsMenu[1].configure(text_color=self.colorTextMenu, fg_color=self.colorMenu))
 
-        i = 0
-        while i < len(nombreIconos):
-          print(nombreIconos[i])
-          self.img_icon_btn = ctk.CTkImage(light_image=Image.open(nombreIconos[i]), size=self.tamanoIconos)
-          self.btnsMenu[i].configure(image=self.img_icon_btn)
-          i += 1
-
-
-        self.btnsMenu[0].bind("<Enter>", lambda event: self.btnsMenu[0].configure(text_color=self.colorMenu, fg_color=self.seleccionBoton)) 
-        self.btnsMenu[0].bind("<Leave>", lambda event:self.btnsMenu[0].configure(text_color=self.colorTextMenu, fg_color=self.colorMenu))     
-        self.btnsMenu[1].bind("<Enter>", lambda event: self.btnsMenu[1].configure(text_color=self.colorMenu, fg_color=self.seleccionBoton)) 
-        self.btnsMenu[1].bind("<Leave>", lambda event:self.btnsMenu[1].configure(text_color=self.colorTextMenu, fg_color=self.colorMenu))
-
-        if '' != button_names[2]:     
-          self.btnsMenu[2].bind("<Enter>", lambda event: self.btnsMenu[2].configure(text_color=self.colorMenu, fg_color=self.seleccionBoton)) 
-          self.btnsMenu[2].bind("<Leave>", lambda event:self.btnsMenu[2].configure(text_color=self.colorTextMenu, fg_color=self.colorMenu))     
+            if '' != button_names[2]:     
+                self.btnsMenu[2].bind("<Enter>", lambda event: self.btnsMenu[2].configure(text_color=self.colorMenu, fg_color=self.seleccionBoton, command=lambda ventana=self.ventanas[1][i-1]: cambiar_ventana(ventana))) 
+                self.btnsMenu[2].bind("<Leave>", lambda event:self.btnsMenu[2].configure(text_color=self.colorTextMenu, fg_color=self.colorMenu))     
 
         # Espacio 2
         self.espacio_2 = ctk.CTkFrame(self, width=1, height=180)
@@ -110,6 +110,11 @@ class DashboardMenuCliente(ctk.CTkFrame):
         # Diseño auto ajustable
         self.rowconfigure(0, weight=1)
         self.nombre_banco.columnconfigure(0, weight=1)
+
+        def cambiar_ventana(nombreVentana):
+            parent.destroy()
+            subprocess.Popen(['python', nombreVentana])
+            
 
 
 # ==== MovimientoWidget ====

@@ -46,7 +46,6 @@ etiqueta_pass.grid(row=3, column=3, pady=5, padx=5)
 entry_pass = CTkEntry(frame_log_2)
 entry_pass.grid(row=4, column=3, pady=5, padx=20, sticky="we")
 
-
 def iniciar_sesion():
     usuario_ingresado = entry_nombre_usuario.get()
     contraseña_ingresada = entry_pass.get()
@@ -63,16 +62,21 @@ def iniciar_sesion():
     cursor.execute(query, (usuario_ingresado, contraseña_ingresada))
     resultado = cursor.fetchone()[0]  # Aquí obtenemos el resultado de la consulta
 
-    # Ahora, verificamos si el resultado indica que el usuario y la contraseña son correctos
+
+    # Después de la verificación del inicio de sesión exitoso para el cliente
     if resultado == 'Aceptado':
         messagebox.showinfo("Inicio correcto", "Se inició correctamente")
+        set_usuario_final(usuario_ingresado)
+
         # Ocultar la pestaña
         app.destroy()
         subprocess.Popen(['python', 'inicio_usuario.py'])
 
+    # Después de la verificación del inicio de sesión exitoso para el administrador
     elif usuario_ingresado == "admin" and contraseña_ingresada == "123":
-        messagebox.showinfo("inicio correcto", "se inicio correctamente")
-        # ocultar la pestaña
+        messagebox.showinfo("inicio correcto","se inicio correctamente")
+        # Ocultar la pestaña
+
         app.destroy()
         subprocess.Popen(['python', 'menu_administrador.py'])
     else:
@@ -80,9 +84,11 @@ def iniciar_sesion():
 
 
 boton = CTkButton(frame_log_2, text="Ingresar", corner_radius=32, fg_color="#2B8C57",
-                  hover_color="green", border_color="#FFFFFF",
-                  border_width=2, width=200, height=50, command=iniciar_sesion)
+                   hover_color="green", border_color="#FFFFFF",
+                   border_width=2, width=200, height=50, command=iniciar_sesion)
 boton.grid(row=5, column=3, pady=5, padx=5)
+
+
 
 app.rowconfigure(0, weight=1)
 app.columnconfigure(0, weight=6)
