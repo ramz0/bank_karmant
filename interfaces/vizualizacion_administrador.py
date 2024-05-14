@@ -1,12 +1,13 @@
 from tkinter import Toplevel, ttk, messagebox
 from customtkinter import CTkButton, CTkEntry
-from ConexionMDB import ConexionMDB
+from ConexionMDB import conectar_a_MariaDB
 
-class Interfazconsultarutas(Toplevel):
+
+class Interfaz_visualizacion_administrador(Toplevel):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.title("Interfaz de Consulta de Rutas")
-        self.minsize(width=900, height=800)
+        self.title("Interfaz Visualizacion Administrador")
+        self.minsize(width=600, height=500)
         self.configure(bg="#f39c12")
 
         # Frame para los campos
@@ -17,94 +18,128 @@ class Interfazconsultarutas(Toplevel):
         self.entry_busqueda = CTkEntry(frame_campos)
         self.entry_busqueda.grid(row=0, column=0, padx=5)
 
-        # Botón de búsqueda
-        btn_buscar = CTkButton(frame_campos, text="Buscar Ruta", command=self.buscar_ruta)  # Sin paréntesis
-        btn_buscar.grid(row=0, column=1, padx=5)
 
         # Botón de visualización
-        btn_visualizar = CTkButton(frame_campos, text="Visualizar Todas", command=self.visualizar_rutas)  # Sin paréntesis
-        btn_visualizar.grid(row=0, column=2, padx=5)
+        btn_visualizar_todos_los_retiros = CTkButton(frame_campos, text="Visualizar Todos los Retiros",
+                                                     command=self.visualizar_t_retiros)
+        btn_visualizar_todos_los_retiros.grid(row=0, column=2, padx=5)
+        btn_visualizar_todas_las_transferencias = CTkButton(frame_campos, text="Visualizar Todos los Transacciones",
+                                                            command=self.visualizar_t_transacciones)
+        btn_visualizar_todas_las_transferencias.grid(row=0, column=3, padx=5)
+        btn_visualizar_todos_los_depositos = CTkButton(frame_campos, text="Visualizar Todos los Depositos",
+                                                       command=self.visualizar_t_depositos)
+        btn_visualizar_todos_los_depositos.grid(row=0, column=4, padx=5)
 
-        # Crear la tabla ttk.Treeview para mostrar los registros de estadios
-        self.tree_rutas = ttk.Treeview(self, columns=('cod_ruta', 'origen', 'destino_final', 'km_recorridos'), show='headings')
-        self.tree_rutas.column('cod_ruta', width=100, anchor='center')
-        self.tree_rutas.column('origen', width=150, anchor='center')
-        self.tree_rutas.column('destino_final', width=200, anchor='center')
-        self.tree_rutas.column('km_recorridos', width=200, anchor='center')
+        self.tree_depositos = ttk.Treeview(self, columns=('ID_CLIENTE_DEPOSITO', 'FECHA_DEPOSITO', 'MONTO_DEPOSITO'),
+                                           show='headings')
+        self.tree_depositos.column('ID_CLIENTE_DEPOSITO', width=100, anchor='center')
+        self.tree_depositos.column('FECHA_DEPOSITO', width=150, anchor='center')
+        self.tree_depositos.column('MONTO_DEPOSITO', width=200, anchor='center')
 
-        self.tree_rutas.heading('cod_ruta', text='cod_ruta')
-        self.tree_rutas.heading('origen', text='origen')
-        self.tree_rutas.heading('destino_final', text='destino_final')
-        self.tree_rutas.heading('km_recorridos', text='km_recorridos')
+        self.tree_depositos.heading('ID_CLIENTE_DEPOSITO', text='ID_CLIENTE_DEPOSITO')
+        self.tree_depositos.heading('FECHA_DEPOSITO', text='FECHA_DEPOSITO')
+        self.tree_depositos.heading('MONTO_DEPOSITO', text='MONTO_DEPOSITO')
+        self.tree_depositos.pack(pady=20)
 
-        self.tree_rutas.pack(pady=20)
+        self.tree_retiros = ttk.Treeview(self, columns=('id_cliente_retira', 'fecha_hora_retiro', 'monto_de_retiro'),
+                                         show='headings')
+        self.tree_retiros.column('id_cliente_retira', width=100, anchor='center')
+        self.tree_retiros.column('fecha_hora_retiro', width=150, anchor='center')
+        self.tree_retiros.column('monto_de_retiro', width=200, anchor='center')
+
+        self.tree_retiros.heading('id_cliente_retira', text='id_cliente_retira')
+        self.tree_retiros.heading('fecha_hora_retiro', text='fecha_hora_retiro')
+        self.tree_retiros.heading('monto_de_retiro', text='monto_de_retiro')
+        self.tree_retiros.pack(pady=20)
+
+        self.tree_transacciones = ttk.Treeview(self, columns=(
+        'id_cliente_tranfiere', 'id_cliente_recibe', 'fecha_hora_transferencia', 'monto_de_tranferencia'),
+                                               show='headings')
+        self.tree_transacciones.column('id_cliente_tranfiere', width=100, anchor='center')
+        self.tree_transacciones.column('id_cliente_recibe', width=150, anchor='center')
+        self.tree_transacciones.column('fecha_hora_transferencia', width=200, anchor='center')
+        self.tree_transacciones.column('monto_de_tranferencia', width=250, anchor='center')
+
+        self.tree_transacciones.heading('id_cliente_tranfiere', text='id_cliente_tranfiere')
+        self.tree_transacciones.heading('id_cliente_recibe', text='id_cliente_recibe')
+        self.tree_transacciones.heading('fecha_hora_transferencia', text='fecha_hora_transferencia')
+        self.tree_transacciones.heading('monto_de_tranferencia', text='monto_de_tranferencia')
+        self.tree_transacciones.pack(pady=20)
 
         # Botón para regresar al menú principal
         btn_regresar = CTkButton(self, text="Regresar al Menú", command=self.regresar_a_menu)
         btn_regresar.pack(pady=10)
 
     def regresar_a_menu(self):
-        self.destroy()  # Cierra la interfaz de Estadios
+        self.destroy()
 
-    def visualizar_rutas(self):
+    def visualizar_t_retiros(self):
         try:
-            # Lógica para visualizar la información de estadios desde la base de datos
-            conexion = ConexionMDB()
+            conexion = conectar_a_MariaDB()
             cursor = conexion.cursor()
 
-            consulta = "SELECT * FROM ruta"
+            consulta = "SELECT * FROM registro_retiro"
 
-            # Ejecutar la consulta
             cursor.execute(consulta)
             filas_rutas = cursor.fetchall()
 
-            # Limpiar la tabla antes de cargar nuevos datos
-            for item in self.tree_rutas.get_children():
-                self.tree_rutas.delete(item)
+            for item in self.tree_retiros.get_children():
+                self.tree_retiros.delete(item)
 
-            # Insertar las filas de estadios en la tabla ttk.Treeview
             for fila in filas_rutas:
-                self.tree_rutas.insert('', 'end', values=fila)
+                self.tree_retiros.insert('', 'end', values=fila)
 
-            # Cerrar el cursor y la conexión
             cursor.close()
             conexion.close()
 
         except Exception as e:
-            messagebox.showerror("Error", f"Error al visualizar las rutas: {str(e)}")
+            messagebox.showerror("Error", f"Error al visualizar los retiros: {str(e)}")
 
-    def buscar_ruta(self):
-        texto_busqueda = self.entry_busqueda.get()
-        if texto_busqueda:
-            try:
-                # Lógica para buscar el estadio por nombre o ciudad desde la base de datos
-                conexion = conectar_a_MariaDB()
-                cursor = conexion.cursor()
+    def visualizar_t_transacciones(self):
+        try:
+            conexion = conectar_a_MariaDB()
+            cursor = conexion.cursor()
 
-                consulta = f"SELECT * FROM ruta WHERE COD_RUTA LIKE '%{texto_busqueda}%' OR ORIGEN LIKE '%{texto_busqueda}%'"
+            consulta = "SELECT * FROM registro_transferencia"
 
-                # Ejecutar la consulta
-                cursor.execute(consulta)
-                filas_ruta = cursor.fetchall()
+            cursor.execute(consulta)
+            filas_transacciones = cursor.fetchall()
 
-                # Limpiar la tabla antes de cargar nuevos datos
-                for item in self.tree_rutas.get_children():
-                    self.tree_rutas.delete(item)
+            for item in self.tree_transacciones.get_children():
+                self.tree_transacciones.delete(item)
 
-                # Insertar las filas de estadios encontrados en la tabla ttk.Treeview
-                for fila in filas_ruta:
-                    self.tree_rutas.insert('', 'end', values=fila)
+            for fila in filas_transacciones:
+                self.tree_transacciones.insert('', 'end', values=fila)
 
-                # Cerrar el cursor y la conexión
-                cursor.close()
-                conexion.close()
+            cursor.close()
+            conexion.close()
 
-            except Exception as e:
-                messagebox.showerror("Error", f"Error al buscar la ruta: {str(e)}")
-        else:
-            messagebox.showwarning("Advertencia", "Ingresa el nombre de la ruta o ciudad para buscar.")
+        except Exception as e:
+            messagebox.showerror("Error", f"Error al visualizar las transacciones: {str(e)}")
+
+    def visualizar_t_depositos(self):
+        try:
+            conexion = conectar_a_MariaDB()
+            cursor = conexion.cursor()
+
+            consulta = "SELECT * FROM REGISTRO_DEPOSITO"
+
+            cursor.execute(consulta)
+            filas_depositos = cursor.fetchall()
+
+            for item in self.tree_depositos.get_children():
+                self.tree_depositos.delete(item)
+
+            for fila in filas_depositos:
+                self.tree_depositos.insert('', 'end', values=fila)
+
+            cursor.close()
+            conexion.close()
+
+        except Exception as e:
+            messagebox.showerror("Error", f"Error al visualizar los depositos: {str(e)}")
 
 
 if __name__ == "__main__":
-    interfaz_consultarutas = Interfazconsultarutas(None)
-    interfaz_consultarutas.mainloop()
+    interfaz_visualizar_administrador = Interfaz_visualizacion_administrador()
+    interfaz_visualizar_administrador.mainloop()
