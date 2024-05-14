@@ -9,7 +9,7 @@ frame_head=CTkFrame(app, fg_color="#2B8C57")
 frame_head.grid(row=0, column=0, sticky= "ne", pady= 5, padx= 5)
 
 img_logo = Image.open("assets/logobanco.png")
-img_logobanco= CTkImage(light_image=img_logo, dark_image=img_logo, size=(200,130))
+img_logobanco= CTkImage(light_image=img_logo, dark_image=img_logo, size=(200,150))
 
 lb_logo= CTkLabel(frame_head, image=img_logobanco,text="", compound="center")
 lb_logo.grid(row=1, column=0, sticky= "nswe",  padx= 15 )
