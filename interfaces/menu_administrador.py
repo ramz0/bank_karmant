@@ -1,6 +1,8 @@
+import subprocess
 from customtkinter import *
 from PIL import Image
 from widgets_custom import DashboardMenuCliente
+from subprocess import *
 
 app = CTk()
 app.geometry()
@@ -37,18 +39,26 @@ img_logo_admin= CTkImage(light_image=img_logo_ad, dark_image=img_logo_ad, size=(
 lb_logo_admin= CTkLabel(frame, image=img_logo_admin, text="")
 lb_logo_admin.grid(row=1, column=1, sticky= "nswe",pady=100, padx= 100)
 
+def acciones_cuenta():
+    # Código para mostrar la interfaz de acciones de cuenta
+    app.destroy()
+    subprocess.Popen(['python', 'acciones_cuneta_administrador.py'])
+
+def visualizacion_administrador():
+     # Código para mostrar la interfaz de acciones de cuenta
+    app.destroy()
+    subprocess.Popen(['python', 'vizualizacion_administrador.py'])
+
 boton= CTkButton(frame, text="Acciones de Cuenta", corner_radius=32, fg_color="#2B8C57",
                 hover_color="green", border_color="#FFFFFF",
-                border_width=2, width=150, height=50 )
+                border_width=2, width=150, height=50, command= acciones_cuenta)
 boton.grid(row=1, column=2, padx= 200 )
 
 
 boton= CTkButton(frame, text="Visualización", corner_radius=32, fg_color="#2B8C57",
                 hover_color="green", border_color="#FFFFFF",
-                border_width=2, width=150, height=50 )
+                border_width=2, width=150, height=50, command=visualizacion_administrador )
 boton.grid(row=2, column=2, padx= 200 )
-#####
-
 
 
 app.mainloop()
