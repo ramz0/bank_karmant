@@ -1,6 +1,7 @@
 import decimal
 import subprocess
 import tkinter as tk
+from tkinter import messagebox
 
 import customtkinter as ctk
 from customtkinter import *
@@ -12,6 +13,9 @@ from widgets_custom import DashboardMenuCliente, MovimientoWidget
 # LISTA DE LOS BOTONES QUE ESTARAN EN EL MENU:
 nombreBotonesMenu = ['DEPOSITO', 'TRANSFERENCIA', 'depositar']
 DIRECCION_DEPOSITAR = 'assets/depositar.png'
+
+conexion_db = conectar_a_MariaDB()
+cursor_db = conexion_db.cursor()
 
 conexion_db = conectar_a_MariaDB()
 cursor_db = conexion_db.cursor()
@@ -60,6 +64,31 @@ saldo.grid(row=1, column=1, pady=5, padx=10,sticky="e")
 #numero de cuenta
 numero_cuenta= ctk.CTkLabel(contenedor_datos,text='numero de cuenta:',fg_color="transparent",font=("Arial",20))
 numero_cuenta.grid(row=1, column=0, pady=5, padx=10,sticky="w")
+
+def obtener_saldo_cuenta(numero_cuenta, label_saldo):
+    query = f"SELECT SALDO FROM CUENTA WHERE NUMERO_CUENTA = '{numero_cuenta}'"
+    cursor_db.execute(query)
+    saldo = cursor_db.fetchone()
+    if saldo:
+        label_saldo.configure(text=f"Saldo: ${saldo[0]}")
+    else:
+        label_saldo.configure(text="Cuenta no encontrada")
+
+def obtener_saldo():
+    numero_cuenta = cuenta.get()  # Obtener el número de cuenta ingresado
+    if numero_cuenta:
+        obtener_saldo_cuenta(numero_cuenta, saldo_disponible)  # Pasar saldo_disponible como argumento
+
+saldo_disponible = ctk.CTkLabel(contenedor_datos, text='saldo', fg_color="transparent", font=("Arial", 20))
+saldo_disponible.grid(row=2, column=1, pady=5, padx=10, sticky="w")
+
+
+# Se obtiene valor de la cuenta
+cuenta = ctk.CTkEntry(contenedor_datos)
+cuenta.grid(row=2, column=0, pady=5, padx=10, sticky="w")
+
+button_obtener_saldo = ctk.CTkButton(contenedor_datos, text="Obtener Saldo", command=obtener_saldo)
+button_obtener_saldo.grid(row=4, column=0, pady=10, padx=10, sticky="")
 
 
 def obtener_saldo_cuenta(numero_cuenta, label_saldo):
@@ -128,10 +157,6 @@ def realizar_deposito():
         print(f"Error al realizar el depósito: {str(e)}")
 
 
-
-
-
-
 #deposito
 contenedor_realizar_deposito= ctk.CTkFrame(cuerpo_depositar, fg_color='#EBEBEB', border_width=1)
 contenedor_realizar_deposito.grid(row=2, column=0, sticky='new', pady=10, padx=10)
@@ -151,6 +176,7 @@ import decimal
 
 def obtener_monto_deposito():
     monto_ingresado_str = monto_deposito_entry.get()  # Obtener el texto ingresado como cadena
+
     if monto_ingresado_str:
         try:
             monto_ingresado_decimal = decimal.Decimal(monto_ingresado_str)  # Convertir la cadena a Decimal
@@ -161,7 +187,9 @@ def obtener_monto_deposito():
         print("El campo de monto de depósito está vacío.")
 
 # Crear un botón para obtener el monto de deposito
+
 button_obtener_monto = ctk.CTkButton(contenedor_realizar_deposito, text="deposiar", command=realizar_deposito)
+
 button_obtener_monto.grid(row=4, column=0, pady=10, padx=10, sticky="")
 
 

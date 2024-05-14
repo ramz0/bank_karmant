@@ -6,7 +6,6 @@ from subprocess import *
 from tkinter import messagebox
 import mysql.connector
 
-
 db_connection = mysql.connector.connect(
     host="localhost",
     user="root",
@@ -63,10 +62,12 @@ def iniciar_sesion():
     cursor.execute(query, (usuario_ingresado, contraseña_ingresada))
     resultado = cursor.fetchone()[0]  # Aquí obtenemos el resultado de la consulta
 
+
     # Después de la verificación del inicio de sesión exitoso para el cliente
     if resultado == 'Aceptado':
         messagebox.showinfo("Inicio correcto", "Se inició correctamente")
         set_usuario_final(usuario_ingresado)
+
         # Ocultar la pestaña
         app.destroy()
         subprocess.Popen(['python', 'inicio_usuario.py'])
@@ -75,13 +76,11 @@ def iniciar_sesion():
     elif usuario_ingresado == "admin" and contraseña_ingresada == "123":
         messagebox.showinfo("inicio correcto","se inicio correctamente")
         # Ocultar la pestaña
+
         app.destroy()
         subprocess.Popen(['python', 'menu_administrador.py'])
     else:
         messagebox.showerror("Error de Inicio de Sesión", "Usuario o contraseña incorrectos")
-
-
-
 
 
 boton = CTkButton(frame_log_2, text="Ingresar", corner_radius=32, fg_color="#2B8C57",
