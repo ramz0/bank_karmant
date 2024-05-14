@@ -7,8 +7,8 @@ class Interfaz_visualizacion_administrador(Toplevel):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.title("Interfaz Visualizacion Administrador")
-        self.minsize(width=600, height=500)
-        self.configure(bg="#f39c12")
+        self.minsize(width=800, height=450)
+        self.configure(bg="#2B8C57")
 
         # Frame para los campos
         frame_campos = ttk.Frame(self)
