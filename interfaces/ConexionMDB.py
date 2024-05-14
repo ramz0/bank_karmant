@@ -1,17 +1,15 @@
-from tkinter import Toplevel
-
-import pymysql
+import mysql.connector
 
 
-class ConexionMDB():
-    def __init__(self):
-        self.connection = pymysql.connect(
-            host='localhost',
+def conectar_a_MariaDB():
+    try:
+        # Reemplaza los valores de usuario, contraseña, host y nombre de la base de datos con los correctos
+        connection = mysql.connector.connect(
             user='root',
             password='',
-            db='bank_karmant'
+            host='localhost',
+            database='bank_karmant'
         )
-
-        self.cursor=self.connection.cursor()
-        self.cursor(print ("conexion establecida con exito"))
-
+        return connection
+    except mysql.connector.Error as error:
+        raise Exception(f"Error de conexión a MariaDB: {str(error)}")
