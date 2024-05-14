@@ -13,3 +13,4 @@ def conectar_a_MariaDB():
         return connection
     except mysql.connector.Error as error:
         raise Exception(f"Error de conexión a MariaDB: {str(error)}")
+
