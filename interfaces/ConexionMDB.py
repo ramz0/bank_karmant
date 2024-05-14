@@ -1,5 +1,6 @@
 import mysql.connector
 
+
 def conectar_a_MariaDB():
     try:
         # Reemplaza los valores de usuario, contraseña, host y nombre de la base de datos con los correctos
@@ -12,3 +13,4 @@ def conectar_a_MariaDB():
         return connection
     except mysql.connector.Error as error:
         raise Exception(f"Error de conexión a MariaDB: {str(error)}")
+

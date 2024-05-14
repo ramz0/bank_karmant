@@ -1,6 +1,7 @@
-from PIL import Image
 import customtkinter as ctk
-from widgets_custom import DashboardMenuCliente, MovimientoWidget 
+from PIL import Image
+
+from widgets_custom import DashboardMenuCliente, MovimientoWidget
 
 # LISTA DE LOS BOTONES QUE ESTARAN EN EL MENU:
 nombreBotonesMenu = ['DEPOSITO', 'TRANSFERENCIA', 'RETIRO']
@@ -30,6 +31,12 @@ lbl_logo_banco.grid(row=1, column=0, pady=5, padx=20, rowspan=2)
 
 nombreCliente = ctk.CTkLabel(contenedorCliente, text='Cliente')
 nombreCliente.grid(row=0, column=0, pady=5, padx=35)
+
+
+
+
+
+
 
 mensajeSaldo = ctk.CTkLabel(contenedorCliente, text='Saldo disponible')
 mensajeSaldo.grid(row=1, column=1, pady=5, padx=35)
