@@ -5,13 +5,20 @@ import customtkinter as ctk
 from customtkinter import *
 from PIL import Image
 
+<<<<<<< HEAD
+=======
+from ConexionMDB import ConexionMDB
+>>>>>>> main
 from widgets_custom import DashboardMenuCliente, MovimientoWidget
 
 # LISTA DE LOS BOTONES QUE ESTARAN EN EL MENU:
 nombreBotonesMenu = ['DEPOSITO', 'TRANSFERENCIA', 'RETIRAR']
 direccion_iconoretirar = 'assets/icono_retirar.png'
+<<<<<<< HEAD
 direccion_movimiento_icono_ida = 'assets/icono_mv_ida.png'
 direccion_movimiento_icono_llegada = 'assets/icono_mv_ida.png'
+=======
+>>>>>>> main
 
 ctk.set_appearance_mode("light") # Fuerza el modo claro
 ctk.set_default_color_theme("green")  # Themes: blue (default), dark-blue, green
