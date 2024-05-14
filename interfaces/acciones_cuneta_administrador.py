@@ -2,6 +2,8 @@ from PIL import Image
 import customtkinter as ctk
 from widgets_custom import DashboardMenuCliente
 from widgets_custom import CTkTable
+from ConexionMDB import *
+
 
 # LISTA DE LOS BOTONES QUE ESTARAN EN EL MENU:
 nombreBotonesMenu = ['ACCIONES CUENTA', 'VISUALIZACIÓN\n ADMINISTRADOR', '']
@@ -14,13 +16,9 @@ colorBase = '#2B8C57'
 tamanoIconosCRUD = (45,45)
 
 camposTabla=['NUMERO_CUENTA','ID_CLIENTE','ID_TIPO_CUENTA','SALDO','FECHA_EMISION', 'FECHA_VENCIMIENTO']
-registrosTablaCliente = [
-  camposTabla,
-  [1,2,3,4,5,6],
-  [1,2,3,4,5,6],
-  [1,2,3,4,5,6],
-  [1,2,3,4,5,6]
-]
+
+registrosTablaCliente = select('cuenta')
+registrosTablaCliente.insert(0, camposTabla)
 
 ctk.set_appearance_mode("light") # Fuerza el modo claro
 ctk.set_default_color_theme("green")  # Themes: blue (default), dark-blue, green

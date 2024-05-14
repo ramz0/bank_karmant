@@ -1,7 +1,7 @@
 from tkinter import Toplevel, ttk, messagebox
+from tkinter.ttk import Style
 from customtkinter import CTkButton, CTkEntry
 from ConexionMDB import conectar_a_MariaDB
-
 
 class Interfaz_visualizacion_administrador(Toplevel):
     def __init__(self, parent=None):
@@ -9,27 +9,30 @@ class Interfaz_visualizacion_administrador(Toplevel):
         self.title("Interfaz Visualizacion Administrador")
         self.minsize(width=800, height=450)
         self.configure(bg="#2B8C57")
+        # Crear un objeto Style y configurar el estilo personalizado para el ttk.Frame
+        estilo = Style()
+        estilo.configure("Custom.TFrame", background="#2B8C57")
 
-        # Frame para los campos
-        frame_campos = ttk.Frame(self)
+        # Frame para los campos con el estilo personalizado
+        frame_campos = ttk.Frame(self, style="Custom.TFrame")
         frame_campos.pack(pady=20)
 
-        # Recuadro de búsqueda
-        self.entry_busqueda = CTkEntry(frame_campos)
-        self.entry_busqueda.grid(row=0, column=0, padx=5)
+        frame_botones = ttk.Frame(self)
+        frame_botones.pack(side="bottom", pady=10)
 
 
         # Botón de visualización
         btn_visualizar_todos_los_retiros = CTkButton(frame_campos, text="Visualizar Todos los Retiros",
                                                      command=self.visualizar_t_retiros)
-        btn_visualizar_todos_los_retiros.grid(row=0, column=2, padx=5)
-        btn_visualizar_todas_las_transferencias = CTkButton(frame_campos, text="Visualizar Todos los Transacciones",
+        btn_visualizar_todos_los_retiros.grid(row=0, column=1, padx=5)
+        btn_visualizar_todas_las_transferencias = CTkButton(frame_campos, text="Visualizar Todos las Transacciones",
                                                             command=self.visualizar_t_transacciones)
-        btn_visualizar_todas_las_transferencias.grid(row=0, column=3, padx=5)
+        btn_visualizar_todas_las_transferencias.grid(row=0, column=2, padx=5)
         btn_visualizar_todos_los_depositos = CTkButton(frame_campos, text="Visualizar Todos los Depositos",
                                                        command=self.visualizar_t_depositos)
-        btn_visualizar_todos_los_depositos.grid(row=0, column=4, padx=5)
+        btn_visualizar_todos_los_depositos.grid(row=0, column=3, padx=5)
 
+        # Área de visualización de datos
         self.tree_depositos = ttk.Treeview(self, columns=('ID_CLIENTE_DEPOSITO', 'FECHA_DEPOSITO', 'MONTO_DEPOSITO'),
                                            show='headings')
         self.tree_depositos.column('ID_CLIENTE_DEPOSITO', width=100, anchor='center')
@@ -67,8 +70,8 @@ class Interfaz_visualizacion_administrador(Toplevel):
         self.tree_transacciones.pack(pady=20)
 
         # Botón para regresar al menú principal
-        btn_regresar = CTkButton(self, text="Regresar al Menú", command=self.regresar_a_menu)
-        btn_regresar.pack(pady=10)
+        btn_regresar = CTkButton(frame_botones, text="Regresar al Menú", command=self.regresar_a_menu)
+        btn_regresar.pack(anchor="sw")  # Anclar el botón en la esquina inferior izquierda
 
     def regresar_a_menu(self):
         self.destroy()
