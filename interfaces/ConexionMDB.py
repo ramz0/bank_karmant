@@ -114,16 +114,17 @@ def delete(tabla, condiciones):
 # Ejemplos de uso:
 
 # Seleccionar todos los registros de la tabla 'usuarios'
-# resultado = select('cuenta')
+# resultado = select('cuenta', 'saldo = 5000.00')
 # for registro in resultado:
 #     print(registro)
 
 # Insertar un nuevo usuario
-# nuevoTipoCuenta = ['6', 'TARJETA VERD3']
-# insert('tipo_cuenta', nuevoTipoCuenta)
+# nuevoTipoCuenta = ['11111111', '1', '1', 5000.00, "2020-1-15", "2025-1-15"]
+# insert('cuenta', nuevoTipoCuenta)
 
 # Actualizar el nombre del usuario con ID 1
 # update('tipo_cuenta', ['TIPO_CUENTA', 'TARJETA VERDE'], 'ID_TIPO_CUENTA = 6')
+# update('cuenta', ['NUMERO_CUENTA', '1212'], f"NUMERO_CUENTA" + " = 111111")
 
 # Eliminar usuarios con nombre 'Juan'
 # delete('tipo_cuenta', "id_tipo_cuenta = 6")
